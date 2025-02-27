@@ -140,9 +140,6 @@ class Batch {
         if ($glob === false) return [];
 
         // Return files
-        return array_filter($glob, function ($file)
-        {
-            return filetype($file) == 'file';
-        });
+        return array_filter($glob, fn($file) => filetype($file) == 'file');
     }
 }

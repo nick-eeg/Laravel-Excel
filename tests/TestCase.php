@@ -7,14 +7,14 @@ class TestCase extends TestBenchTestCase
 
     public function testExcelClass()
     {
-        $excel = App::make('Maatwebsite\Excel\Excel');
+        $excel = App::make(\Maatwebsite\Excel\Excel::class);
         $this->assertInstanceOf(\Maatwebsite\Excel\Excel::class, $excel);
     }
 
 
     protected function getPackageProviders($app)
     {
-        return array('Maatwebsite\Excel\ExcelServiceProvider');
+        return [\Maatwebsite\Excel\ExcelServiceProvider::class];
     }
 
 

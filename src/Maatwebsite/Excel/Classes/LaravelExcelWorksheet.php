@@ -126,7 +126,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
         foreach ($this->allowedPageSetup as $setup)
         {
             // set the setter
-            list($setter, $set) = $this->_setSetter($setup);
+            [$setter, $set] = $this->_setSetter($setup);
 
             // get the value
             $value = config('excel.sheets.pageSetup.' . $setup, null);
@@ -394,7 +394,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
      */
     public function setParser($parser = false)
     {
-        return $this->parser = $parser ? $parser : app('excel.parsers.view');
+        return $this->parser = $parser ?: app('excel.parsers.view');
     }
 
     /**
@@ -467,8 +467,8 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
     {
         // Set defaults
         $nullValue = !is_null($nullValue) ? $nullValue : $this->getDefaultNullValue();
-        $startCell = $startCell ? $startCell : $this->getDefaultStartCell();
-        $strictNullComparison = $strictNullComparison ? $strictNullComparison : $this->getDefaultStrictNullComparison();
+        $startCell = $startCell ?: $this->getDefaultStartCell();
+        $strictNullComparison = $strictNullComparison ?: $this->getDefaultStrictNullComparison();
 
         // Set the heading generation setting
         $this->setAutoHeadingGeneration($headingGeneration);
@@ -500,7 +500,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
         }
 
         // start coordinate
-        list ($startColumn, $startRow) = PHPExcel_Cell::coordinateFromString($startCell);
+        [$startColumn, $startRow] = PHPExcel_Cell::coordinateFromString($startCell);
 
         $currentRow = $startRow;
         // Loop through $source
@@ -601,7 +601,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
                 foreach ($array as $key1 => &$row)
                 {
                     $data[$key1] = [];
-                    array_walk($row, function($cell, $key2) use ($key1, &$data) {
+                    array_walk($row, function($cell, $key2) use ($key1, &$data): void {
                         $data[$key1][$key2] = is_array($cell) ? '': $cell;
                     });
                 }
@@ -683,7 +683,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
     public function _setAttributes($setter, $params)
     {
         // Set the setter and the key
-        list($setter, $key) = $this->_setSetter($setter);
+        [$setter, $key] = $this->_setSetter($setter);
 
         // If is page setup
         if (in_array($key, $this->allowedPageSetup))
@@ -890,7 +890,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
         else
         {
             // Split the cell to column and row
-            list($column, $row) = preg_split('/(?<=[a-z])(?=[0-9]+)/i', $cell);
+            [$column, $row] = preg_split('/(?<=[a-z])(?=[0-9]+)/i', $cell);
 
             if ($column)
                 $this->setWidth($column, $width);
@@ -913,7 +913,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
         $this->hasFixedSizeColumns = $columns || !empty($columns) ? false : true;
 
         // Set autosize to true
-        $this->autoSize = $columns ? $columns : false;
+        $this->autoSize = $columns ?: false;
 
         // If is not an array
         if (!is_array($columns) && $columns)
@@ -950,10 +950,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
      */
     public function getAutosize()
     {
-        if (isset($this->autoSize))
-            return $this->autoSize;
-
-        return config('excel.export.autosize', true);
+        return $this->autoSize ?? config('excel.export.autosize', true);
     }
 
     /**
@@ -972,7 +969,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
      */
     public function setAutoFilter($value = false)
     {
-        $value = $value ? $value : $this->calculateWorksheetDimension();
+        $value = $value ?: $this->calculateWorksheetDimension();
         parent::setAutoFilter($value);
 
         return $this;
@@ -1094,7 +1091,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
         parent::mergeCells($pRange);
 
         // Set center alignment on merge cells
-        $this->cells($pRange, function ($cell) use ($alignment)
+        $this->cells($pRange, function ($cell) use ($alignment): void
         {
             $aligment = is_string($alignment) ? $alignment : config('excel.export.merged_cell_alignment', 'left');
             $cell->setAlignment($aligment);
@@ -1262,7 +1259,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
      */
     public function setValueOfCell($cellValue, $currentColumn, $startRow)
     {
-        is_string($cellValue) && is_numeric($cellValue) && !is_integer($cellValue)
+        is_string($cellValue) && is_numeric($cellValue) && !is_int($cellValue)
             ? $this->getCell($currentColumn . $startRow)->setValueExplicit($cellValue)
             : $this->getCell($currentColumn . $startRow)->setValue($cellValue);
     }

@@ -53,7 +53,7 @@ trait SingleImportTestingTrait {
     {
         $me = $this;
 
-        $this->loadedFile->each(function($cells) use($me) {
+        $this->loadedFile->each(function($cells) use($me): void {
 
             $me->assertInstanceOf(\Maatwebsite\Excel\Collections\CellCollection::class, $cells);
 
@@ -181,7 +181,7 @@ trait SingleImportTestingTrait {
     {
         $me = $this;
 
-        $config = $this->loadedFile->byConfig('excel.import.sheets', function($config) use($me)
+        $config = $this->loadedFile->byConfig('excel.import.sheets', function($config) use($me): void
         {
             $me->assertInstanceOf(\Maatwebsite\Excel\Readers\ConfigReader::class, $config);
         });

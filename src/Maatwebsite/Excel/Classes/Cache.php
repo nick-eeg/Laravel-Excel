@@ -82,7 +82,7 @@ class Cache {
         $this->addAdditionalSettings();
 
         // return the driver
-        return isset($this->available[$this->driver]) ? $this->available[$this->driver] : reset($this->available);
+        return $this->available[$this->driver] ?? reset($this->available);
     }
 
     /**

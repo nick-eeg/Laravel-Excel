@@ -52,7 +52,7 @@ class ChunkReadFilterTest extends TestCase
         $this->excel->filter('chunk')
                     ->selectSheets('Sheet2')
                     ->load(__DIR__ . "/files/multi.xls")
-                    ->chunk($chunk_size, function ($results) {
+                    ->chunk($chunk_size, function ($results): void {
                         foreach ($results as $row) {
                             $output[] = (int)$row->header;
                         }
@@ -78,7 +78,7 @@ class ChunkReadFilterTest extends TestCase
         file_put_contents(__DIR__ . '/log.txt', '');
         file_put_contents(__DIR__ . '/rounds.txt', '');
 
-        $this->excel->filter('chunk')->load(__DIR__ . "/files/{$file}")->chunk($chunk_size, function ($results) {
+        $this->excel->filter('chunk')->load(__DIR__ . "/files/{$file}")->chunk($chunk_size, function ($results): void {
 
             foreach ($results as $row) {
                 $output[] = (int)$row->header;

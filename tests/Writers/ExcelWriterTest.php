@@ -105,7 +105,7 @@ class ExcelWriterTest extends TestCase {
         $title = 'Worksheet Title';
         $closureTitle = 'Closure Title';
 
-        $this->writer->sheet($title, function($sheet) use($closureTitle) {
+        $this->writer->sheet($title, function($sheet) use($closureTitle): void {
             $sheet->setTitle($closureTitle);
         });
 
@@ -155,7 +155,7 @@ class ExcelWriterTest extends TestCase {
         foreach($properties as $prop)
         {
             // Set a random value
-            $originalValue = rand();
+            $originalValue = random_int(0, mt_getrandmax());
 
             // Set needed set/get methods
             $method     = 'set' . ucfirst($prop);
@@ -174,10 +174,10 @@ class ExcelWriterTest extends TestCase {
 
     public function testCreateFromArray()
     {
-        $info = Excel::create('test', function ($writer)
+        $info = Excel::create('test', function ($writer): void
         {
 
-            $writer->sheet('test', function ($sheet)
+            $writer->sheet('test', function ($sheet): void
             {
                 $sheet->fromArray([
                     'test data'
@@ -190,8 +190,8 @@ class ExcelWriterTest extends TestCase {
 
     public function testCreateSheetFromArray()
     {
-        $info = Excel::create('test', function ($writer) {
-            $writer->sheet('test', function ($sheet) {
+        $info = Excel::create('test', function ($writer): void {
+            $writer->sheet('test', function ($sheet): void {
                 $sheet->createSheetFromArray([
                     'test data'
                 ]);
@@ -203,8 +203,8 @@ class ExcelWriterTest extends TestCase {
 
     public function testCreateSheetFromArrayThrowsException()
     {
-        Excel::create('test', function ($writer) {
-            $writer->sheet('test', function ($sheet) {
+        Excel::create('test', function ($writer): void {
+            $writer->sheet('test', function ($sheet): void {
                 $this->setExpectedException(PHPExcel_Exception::class);
                 $sheet->createSheetFromArray('test data');
             });
@@ -213,9 +213,9 @@ class ExcelWriterTest extends TestCase {
 
     public function testNumberPrecision()
     {
-        $info = Excel::create('numbers', function ($writer)
+        $info = Excel::create('numbers', function ($writer): void
         {
-            $writer->sheet('test', function ($sheet)
+            $writer->sheet('test', function ($sheet): void
             {
                 $sheet->fromArray([
                     ['number' => '1234'],
@@ -261,14 +261,14 @@ class ExcelWriterTest extends TestCase {
      */
     public function testNoSheets()
     {
-        Excel::create('no_sheets', function ($writer) {})->string();
+        Excel::create('no_sheets', function ($writer): void {})->string();
     }
 
     public function testInvalidExtensionStore()
     {
-        $file = Excel::create('numbers', function ($writer)
+        $file = Excel::create('numbers', function ($writer): void
         {
-            $writer->sheet('test', function ($sheet)
+            $writer->sheet('test', function ($sheet): void
             {
                 $sheet->fromArray([
                     'number' => 1234
@@ -281,9 +281,9 @@ class ExcelWriterTest extends TestCase {
 
     public function testInvalidExtensionDownloadExport()
     {
-        $file = Excel::create('numbers', function ($writer)
+        $file = Excel::create('numbers', function ($writer): void
         {
-            $writer->sheet('test', function ($sheet)
+            $writer->sheet('test', function ($sheet): void
             {
                 $sheet->fromArray([
                     'number' => 1234
@@ -296,9 +296,9 @@ class ExcelWriterTest extends TestCase {
 
     public function testInvalidExtensionString()
     {
-        $file = Excel::create('numbers', function ($writer)
+        $file = Excel::create('numbers', function ($writer): void
         {
-            $writer->sheet('test', function ($sheet)
+            $writer->sheet('test', function ($sheet): void
             {
                 $sheet->fromArray([
                     'number' => 1234
@@ -313,9 +313,9 @@ class ExcelWriterTest extends TestCase {
     {
         View::addLocation(realpath(__DIR__.'/views'));
 
-        $info = Excel::create('numbers', function ($writer)
+        $info = Excel::create('numbers', function ($writer): void
         {
-            $writer->sheet('test', function ($sheet)
+            $writer->sheet('test', function ($sheet): void
             {
                 $sheet->loadView('test')->with(['foo' => 'bar']);
             });

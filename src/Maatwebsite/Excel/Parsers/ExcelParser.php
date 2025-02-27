@@ -265,9 +265,7 @@ class ExcelParser {
             {
                 // increase +1
                 $index = preg_replace_callback( "/(\d+)$/",
-                    function ($matches) {
-                        return ++$matches[1];
-                    }, $index);
+                    fn($matches) => ++$matches[1], $index);
             }
             else
             {
@@ -407,7 +405,7 @@ class ExcelParser {
 
         // If we want to skip rows, add the amount of rows
         if ( $skip > 0 )
-            $startRow = $startRow + $skip;
+            $startRow += $skip;
 
         // Return the startrow
         return $startRow;
@@ -432,7 +430,7 @@ class ExcelParser {
      */
     protected function parseCells()
     {
-        $parsedCells = array();
+        $parsedCells = [];
 
         // Skip the columns when needed
         $startColumn = $this->reader->getTargetSkipColumns();
@@ -542,7 +540,7 @@ class ExcelParser {
     protected function encode($value)
     {
         // Get input and output encoding
-        list($input, $output) = array_values(config('excel.import.encoding', array('UTF-8', 'UTF-8')));
+        [$input, $output] = array_values(config('excel.import.encoding', ['UTF-8', 'UTF-8']));
 
         // If they are the same, return the value
         if ( $input == $output )
@@ -657,7 +655,7 @@ class ExcelParser {
      * Set selected columns
      * @param array $columns
      */
-    protected function setSelectedColumns($columns = array())
+    protected function setSelectedColumns($columns = [])
     {
         // Set the columns
         $this->columns = $columns;

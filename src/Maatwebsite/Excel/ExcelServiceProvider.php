@@ -60,10 +60,10 @@ class ExcelServiceProvider extends ServiceProvider {
         
         //Enable an "export" method on Eloquent collections. ie: model::all()->export('file');
 	    if (method_exists(Collection::class, 'macro')) {
-            Collection::macro('export', function($filename, $type = 'xlsx', $method = 'download') {
+            Collection::macro('export', function($filename, $type = 'xlsx', $method = 'download'): void {
                 $model = $this;
-                Facades\Excel::create($filename, function($excel) use ($model, $filename) {
-                    $excel->sheet($filename, function($sheet) use ($model) {
+                Facades\Excel::create($filename, function($excel) use ($model, $filename): void {
+                    $excel->sheet($filename, function($sheet) use ($model): void {
                     $sheet->fromModel($model);
                 });
             })->$method($type);
@@ -120,12 +120,9 @@ class ExcelServiceProvider extends ServiceProvider {
     protected function bindCssParser()
     {
         // Bind css parser
-        $this->app->singleton('excel.parsers.css', function ()
-        {
-            return new CssParser(
-                new CssToInlineStyles()
-            );
-        });
+        $this->app->singleton('excel.parsers.css', fn() => new CssParser(
+            new CssToInlineStyles()
+        ));
     }
 
     /**
@@ -135,22 +132,16 @@ class ExcelServiceProvider extends ServiceProvider {
     protected function bindReaders()
     {
         // Bind the laravel excel reader
-        $this->app->singleton('excel.reader', function ($app)
-        {
-            return new LaravelExcelReader(
-                $app['files'],
-                $app['excel.identifier'],
-                $app['Illuminate\Contracts\Bus\Dispatcher']
-            );
-        });
+        $this->app->singleton('excel.reader', fn($app) => new LaravelExcelReader(
+            $app['files'],
+            $app['excel.identifier'],
+            $app[\Illuminate\Contracts\Bus\Dispatcher::class]
+        ));
 
         // Bind the html reader class
-        $this->app->singleton('excel.readers.html', function ($app)
-        {
-            return new Html(
-                $app['excel.parsers.css']
-            );
-        });
+        $this->app->singleton('excel.readers.html', fn($app) => new Html(
+            $app['excel.parsers.css']
+        ));
     }
 
     /**
@@ -160,12 +151,9 @@ class ExcelServiceProvider extends ServiceProvider {
     protected function bindParsers()
     {
         // Bind the view parser
-        $this->app->singleton('excel.parsers.view', function ($app)
-        {
-            return new ViewParser(
-                $app['excel.readers.html']
-            );
-        });
+        $this->app->singleton('excel.parsers.view', fn($app) => new ViewParser(
+            $app['excel.readers.html']
+        ));
     }
 
     /**
@@ -175,14 +163,11 @@ class ExcelServiceProvider extends ServiceProvider {
     protected function bindWriters()
     {
         // Bind the excel writer
-        $this->app->singleton('excel.writer', function ($app)
-        {
-            return new LaravelExcelWriter(
-                $app->make(Response::class),
-                $app['files'],
-                $app['excel.identifier']
-            );
-        });
+        $this->app->singleton('excel.writer', fn($app) => new LaravelExcelWriter(
+            $app->make(Response::class),
+            $app['files'],
+            $app['excel.identifier']
+        ));
     }
 
     /**
@@ -201,7 +186,7 @@ class ExcelServiceProvider extends ServiceProvider {
                 $app['excel.parsers.view']
             );
 
-            $excel->registerFilters($app['config']->get('excel.filters', array()));
+            $excel->registerFilters($app['config']->get('excel.filters', []));
 
             return $excel;
         });
@@ -216,10 +201,7 @@ class ExcelServiceProvider extends ServiceProvider {
     protected function bindClasses()
     {
         // Bind the format identifier
-        $this->app->singleton('excel.identifier', function ($app)
-        {
-            return new FormatIdentifier($app['files']);
-        });
+        $this->app->singleton('excel.identifier', fn($app) => new FormatIdentifier($app['files']));
     }
 
     /**

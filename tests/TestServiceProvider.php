@@ -19,7 +19,7 @@ class TestServiceProvider extends TestCase
 
     public function testProviders()
     {
-        $app = m::mock('Illuminate\Foundation\Application');
+        $app = m::mock(\Illuminate\Foundation\Application::class);
         $provider = new ExcelServiceProvider($app);
 
         $this->assertCount(6, $provider->provides());

@@ -79,7 +79,7 @@ abstract class File {
     {
         // Translate the file into a FileHandler
         $class = get_class($this);
-        $handler = substr_replace($class, $type . 'Handler', strrpos($class, $type));
+        $handler = substr_replace($class, $type . 'Handler', strrpos($class, (string) $type));
 
         // Check if the handler exists
         if (!class_exists($handler))

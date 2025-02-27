@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
 
     'cache'      => [
 
@@ -346,7 +346,7 @@ return array(
         */
 
         'registered' => [
-            'chunk' => 'Maatwebsite\Excel\Filters\ChunkReadFilter'
+            'chunk' => \Maatwebsite\Excel\Filters\ChunkReadFilter::class
         ],
 
         /*
@@ -701,4 +701,4 @@ return array(
 
     ]
 
-);
+];

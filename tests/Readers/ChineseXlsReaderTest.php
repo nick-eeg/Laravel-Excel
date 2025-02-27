@@ -68,20 +68,20 @@ class ChineseXlsReaderTest extends TestCase {
     public function testToArray()
     {
         $array = $this->loadedXls->toArray();
-        $this->assertEquals(array(
+        $this->assertEquals([
 
-            array(
+            [
                 '商品編號'  => 'L01A01SY047',
                 '商品名稱'  => 'LED T8燈管',
                 '實際數量'  => 1,
-            ),
-            array(
+            ],
+            [
                 '商品編號'  => 'L01A01SY046',
                 '商品名稱'  => 'LED T8燈管',
                 '實際數量'  => 1,
-            )
+            ]
 
-        ), $array);
+        ], $array);
     }
 
     /**

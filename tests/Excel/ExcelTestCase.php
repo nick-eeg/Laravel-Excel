@@ -56,7 +56,7 @@ class ExcelTestCase extends PHPUnit_Framework_TestCase {
      */
     public function mockPHPExcel()
     {
-        $this->phpexcel = m::mock('Maatwebsite\Excel\Classes\PHPExcel');
+        $this->phpexcel = m::mock(\Maatwebsite\Excel\Classes\PHPExcel::class);
         $this->phpexcel->shouldReceive('getID');
         $this->phpexcel->shouldReceive('disconnectWorksheets');
         $this->phpexcel->shouldReceive('setDefaultProperties');
@@ -68,7 +68,7 @@ class ExcelTestCase extends PHPUnit_Framework_TestCase {
      */
     public function mockReader()
     {
-        $this->reader = m::mock('Maatwebsite\Excel\Readers\LaravelExcelReader');
+        $this->reader = m::mock(\Maatwebsite\Excel\Readers\LaravelExcelReader::class);
         $this->reader->shouldReceive('injectExcel')->with($this->phpexcel);
         $this->reader->shouldReceive('load');
         $this->reader->shouldReceive('setSelectedSheets');
@@ -82,7 +82,7 @@ class ExcelTestCase extends PHPUnit_Framework_TestCase {
      */
     public function mockWriter()
     {
-        $this->writer = m::mock('Maatwebsite\Excel\Writers\LaravelExcelWriter');
+        $this->writer = m::mock(\Maatwebsite\Excel\Writers\LaravelExcelWriter::class);
         $this->writer->shouldReceive('injectExcel')->with($this->phpexcel);
         $this->writer->shouldReceive('setTitle');
         $this->writer->shouldReceive('setFileName');
@@ -95,7 +95,7 @@ class ExcelTestCase extends PHPUnit_Framework_TestCase {
      */
     public function mockBatch()
     {
-        $this->batch = m::mock('Maatwebsite\Excel\Readers\Batch');
+        $this->batch = m::mock(\Maatwebsite\Excel\Readers\Batch::class);
         $this->batch->shouldReceive('start')->andReturn('foo');
     }
 
