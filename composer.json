@@ -19,7 +19,7 @@
   ],
   "repositories": [{
     "type": "vcs",
-    "url": "https://github.com/jtallant/PHPExcel"
+    "url": "https://github.com/nick-eeg/PHPExcel"
   }],
   "require": {
     "php": ">=5.5",
